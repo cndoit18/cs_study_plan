@@ -8,22 +8,28 @@ int main()
 	double maxAngle = M_PI * 2;
 	int i, wide;
 	char plot = '*';
-	do {
+	do
+	{
 		printf("Input the number of steps: ");
 		scanf("%d", &numSteps);
-	} while(numSteps < 2);
+	} while (numSteps < 2);
 
 	for (i = 0; i <= numSteps; i++)
 	{
 		angle = (double)i / (double)numSteps * maxAngle;
 		sinVal = sin(angle);
 		cosVal = cos(angle);
-		wide =  (int)(60 * (sinVal + 1));
-		if (fabs(cosVal) < 0.1) {
+		wide = (int)(60 * (sinVal + 1));
+		if (fabs(cosVal) < 0.1)
+		{
 			plot = '*';
-		} else if (cosVal > 0) {
+		}
+		else if (cosVal > 0)
+		{
 			plot = '\\';
-		} else {
+		}
+		else
+		{
 			plot = '/';
 		}
 		printf("%3d: %5.2f %*c\n", i, angle, wide, plot);
