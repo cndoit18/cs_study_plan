@@ -6,5 +6,5 @@
 */
 int main()
 {
-	printf("Hello, and welcome to CSE 251!!!\n");
+  printf("Hello, and welcome to CSE 251!!!\n");
 }
