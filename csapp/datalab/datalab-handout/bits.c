@@ -203,7 +203,7 @@ int negate(int x)
  */
 int isAsciiDigit(int x)
 {
-  return !!((0x2f + (~x + 1)) >> 31) & ((x + (~0x3a + 1)) >> 31);
+  return !!(((0x2f + (~x + 1)) >> 31) & ((~0x3a + 1 + x) >> 31));
 }
 /* 
  * conditional - same as x ? y : z 
@@ -214,8 +214,8 @@ int isAsciiDigit(int x)
  */
 int conditional(int x, int y, int z)
 {
-  int mask = ~(!!x) + 1;
-  return (mask & y) | (~mask & z);
+  int mask = ~(!x) + 1;
+  return (mask & z )| (~mask & y);
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
