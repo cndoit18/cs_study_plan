@@ -132,7 +132,6 @@ NOTES:
  *      the correct answers.
  */
 
-
 #endif
 //1
 /* 
@@ -142,8 +141,9 @@ NOTES:
  *   Max ops: 14
  *   Rating: 1
  */
-int bitXor(int x, int y) {
-  return 2;
+int bitXor(int x, int y)
+{
+  return (~(x & y)) & (~(~x & ~y));
 }
 /* 
  * tmin - return minimum two's complement integer 
@@ -151,10 +151,9 @@ int bitXor(int x, int y) {
  *   Max ops: 4
  *   Rating: 1
  */
-int tmin(void) {
-
-  return 2;
-
+int tmin(void)
+{
+  return 1 << 31;
 }
 //2
 /*
@@ -164,8 +163,9 @@ int tmin(void) {
  *   Max ops: 10
  *   Rating: 1
  */
-int isTmax(int x) {
-  return 2;
+int isTmax(int x)
+{
+  return !(((x + 1) ^ x) + !!(x + 1));
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -175,8 +175,10 @@ int isTmax(int x) {
  *   Max ops: 12
  *   Rating: 2
  */
-int allOddBits(int x) {
-  return 2;
+int allOddBits(int x)
+{
+  x = (x & 0xAA) & ((x >> 8) & 0xAA) & ((x >> 16) & 0xAA) & ((x >> 24) & 0xAA);
+  return !(x ^ 0xAA);
 }
 /* 
  * negate - return -x 
@@ -185,8 +187,9 @@ int allOddBits(int x) {
  *   Max ops: 5
  *   Rating: 2
  */
-int negate(int x) {
-  return 2;
+int negate(int x)
+{
+  return ~x + 1;
 }
 //3
 /* 
@@ -198,8 +201,9 @@ int negate(int x) {
  *   Max ops: 15
  *   Rating: 3
  */
-int isAsciiDigit(int x) {
-  return 2;
+int isAsciiDigit(int x)
+{
+  return !!((0x2f + (~x + 1)) >> 31) & ((x + (~0x3a + 1)) >> 31);
 }
 /* 
  * conditional - same as x ? y : z 
@@ -208,8 +212,10 @@ int isAsciiDigit(int x) {
  *   Max ops: 16
  *   Rating: 3
  */
-int conditional(int x, int y, int z) {
-  return 2;
+int conditional(int x, int y, int z)
+{
+  int mask = ~(!!x) + 1;
+  return (mask & y) | (~mask & z);
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
@@ -217,9 +223,13 @@ int conditional(int x, int y, int z) {
  *   Legal ops: ! ~ & ^ | + << >>
  *   Max ops: 24
  *   Rating: 3
+    y > x - 1
+    0 > x - 1 - y
  */
-int isLessOrEqual(int x, int y) {
-  return 2;
+int isLessOrEqual(int x, int y)
+{
+  int sign = (x >> 31) ^ (y >> 31); // same is 0, different is -1
+  return !!(sign & (x >> 31)) | !!((~sign) & ((~y + x) >> 31));
 }
 //4
 /* 
@@ -230,8 +240,13 @@ int isLessOrEqual(int x, int y) {
  *   Max ops: 12
  *   Rating: 4 
  */
-int logicalNeg(int x) {
-  return 2;
+int logicalNeg(int x)
+{
+  x = x | (x >> 16);
+  x = x | (x >> 8);
+  x = x | (x >> 4);
+  x = x | (x >> 2);
+  return (~(x | (x >> 1))) & 1;
 }
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
@@ -245,8 +260,29 @@ int logicalNeg(int x) {
  *  Max ops: 90
  *  Rating: 4
  */
-int howManyBits(int x) {
-  return 0;
+int howManyBits(int x)
+{
+  int mask, sum;
+  x = (x >> 31) ^ x;
+  mask = ~(!!(x >> 16)) + 1;
+  sum = mask & 16;
+  x = (mask & (x >> 16)) | (~mask & (~((~0) << 16)) & x);
+  mask = ~(!!(x >> 8)) + 1;
+  sum += mask & 8;
+  x = (mask & (x >> 8)) | (~mask & (x << 8 >> 8));
+
+  mask = ~(!!(x >> 4)) + 1;
+  sum += mask & 4;
+  x = (mask & (x >> 4)) | (~mask & (x << 4 >> 4));
+
+  mask = ~(!!(x >> 2)) + 1;
+  sum += mask & 2;
+  x = (mask & (x >> 2)) | (~mask & (x << 2 >> 2));
+
+  mask = ~(!!(x >> 1)) + 1;
+  sum += mask & 1;
+  x = (mask & (x >> 1)) | (~mask & (x << 1 >> 1));
+  return sum + x + 1;
 }
 //float
 /* 
@@ -260,8 +296,15 @@ int howManyBits(int x) {
  *   Max ops: 30
  *   Rating: 4
  */
-unsigned floatScale2(unsigned uf) {
-  return 2;
+unsigned floatScale2(unsigned uf)
+{
+  int exp = (uf & 0x7f800000) >> 23;
+  int sign = uf & (1 << 31);
+  if (exp == 0)
+    return uf << 1 | sign;
+  if (exp == 255)
+    return uf;
+  return ((++exp) << 23) | (uf & 0x807fffff);
 }
 /* 
  * floatFloat2Int - Return bit-level equivalent of expression (int) f
@@ -275,8 +318,9 @@ unsigned floatScale2(unsigned uf) {
  *   Max ops: 30
  *   Rating: 4
  */
-int floatFloat2Int(unsigned uf) {
-  return 2;
+int floatFloat2Int(unsigned uf)
+{
+  return 0;
 }
 /* 
  * floatPower2 - Return bit-level equivalent of the expression 2.0^x
@@ -291,6 +335,13 @@ int floatFloat2Int(unsigned uf) {
  *   Max ops: 30 
  *   Rating: 4
  */
-unsigned floatPower2(int x) {
-    return 2;
+unsigned floatPower2(int x)
+{
+  int INF = 0xff << 23;
+  int exp = x + 127;
+  if (exp <= 0)
+    return 0;
+  if (exp >= 255)
+    return INF;
+  return exp << 23;
 }
