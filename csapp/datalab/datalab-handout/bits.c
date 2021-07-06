@@ -229,7 +229,7 @@ int conditional(int x, int y, int z)
 int isLessOrEqual(int x, int y)
 {
   int diff = (x >> 31) ^ (y >> 31);
-  return !!(x >> 31 & diff) | ((x + ~y) >> 31) & (!diff);
+  return (!!(x >> 31 & diff)) | (((x + ~y) >> 31) & (!diff));
 }
 //4
 /* 
@@ -263,26 +263,30 @@ int logicalNeg(int x)
 int howManyBits(int x)
 {
   int mask, sum;
-  x = (x >> 31) ^ x;
-  mask = ~(!!(x >> 16)) + 1;
-  sum = mask & 16;
-  x = (mask & (x >> 16)) | (~mask & (~((~0) << 16)) & x);
-  mask = ~(!!(x >> 8)) + 1;
-  sum += mask & 8;
-  x = (mask & (x >> 8)) | (~mask & (x << 8 >> 8));
+  mask = x >> 31;
+  sum = 0;
+  x = ((~mask) & x) | (mask & ~x);
+  mask = ~(!(x >> 16)) + 1;
+  x = ((~mask) & (x >> 16)) | ((mask & ((~(1 << 31)) >> 15)) & x);
+  sum += (~mask) & 16;
 
-  mask = ~(!!(x >> 4)) + 1;
-  sum += mask & 4;
-  x = (mask & (x >> 4)) | (~mask & (x << 4 >> 4));
+  mask = ~(!(x >> 8)) + 1;
+  x = ((~mask) & (x >> 8)) | ((mask & ((~(1 << 31)) >> 23)) & x);
+  sum += (~mask) & 8;
 
-  mask = ~(!!(x >> 2)) + 1;
-  sum += mask & 2;
-  x = (mask & (x >> 2)) | (~mask & (x << 2 >> 2));
+  mask = ~(!(x >> 4)) + 1;
+  x = ((~mask) & (x >> 4)) | ((mask & ((~(1 << 31)) >> 27)) & x);
+  sum += (~mask) & 4;
 
-  mask = ~(!!(x >> 1)) + 1;
-  sum += mask & 1;
-  x = (mask & (x >> 1)) | (~mask & (x << 1 >> 1));
-  return sum + x + 1;
+  mask = ~(!(x >> 2)) + 1;
+  x = ((~mask) & (x >> 2)) | ((mask & ((~(1 << 31)) >> 29)) & x);
+  sum += (~mask) & 2;
+
+  mask = ~(!(x >> 1)) + 1;
+  x = ((~mask) & (x >> 1)) | ((mask & ((~(1 << 31)) >> 30)) & x);
+  sum += (~mask) & 1;
+
+  return sum + 1 + (x & 1);
 }
 //float
 /* 
@@ -320,7 +324,31 @@ unsigned floatScale2(unsigned uf)
  */
 int floatFloat2Int(unsigned uf)
 {
-  return 0;
+  int exp = (uf & 0x7f800000) >> 23;
+  int e;
+  int f = uf & 0x7fffff;
+  if (exp == 255)
+  {
+    return 0x80000000u;
+  }
+
+  e = exp - 127;
+  if (e < 0)
+  {
+    return 0;
+  }
+
+  if (e < 23)
+  {
+    f = (f >> (23 - e)) + (1 << e);
+    return (uf >> 31) ? -f : f;
+  }
+  else if (e > 31)
+  {
+    return 0x80000000u;
+  }
+  f = (f << (e - 23)) + (1 << e);
+  return (uf >> 31) ? -f : f;
 }
 /* 
  * floatPower2 - Return bit-level equivalent of the expression 2.0^x
@@ -337,11 +365,10 @@ int floatFloat2Int(unsigned uf)
  */
 unsigned floatPower2(int x)
 {
-  int INF = 0xff << 23;
   int exp = x + 127;
   if (exp <= 0)
     return 0;
   if (exp >= 255)
-    return INF;
+    return 0x7f800000u;
   return exp << 23;
 }
