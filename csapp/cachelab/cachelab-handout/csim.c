@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <time.h>
 #include <getopt.h>
 #include <stdlib.h>
 #include "cachelab.h"
+
+int steps = 0;
 
 int hit_counts = 0, miss_counts = 0, eviction_counts = 0;
 bool verbose = false;
@@ -27,7 +28,7 @@ void usage(char *bin)
 
 typedef struct
 {
-    time_t timedata;
+    int timedata;
     unsigned long address;
     bool vaild;
 } cacheline;
@@ -62,14 +63,14 @@ void close_cache(cache *c)
 
 void update_cache(cache *c, unsigned long address)
 {
-    int begin = (c->setmask & address) >> c->b;
+    int begin = ((c->setmask & address) >> c->b) * c->E;
     int end = begin + c->E;
     for (int i = begin; i < end; i++)
     {
         if (c->lines[i].vaild && (c->lines[i].address & c->tagmask) == (address & c->tagmask))
         {
             hit_counts++;
-            c->lines[i].timedata = time((time_t *)NULL);
+            c->lines[i].timedata = ++steps;
             return;
         }
     }
@@ -78,7 +79,7 @@ void update_cache(cache *c, unsigned long address)
         if (!c->lines[i].vaild)
         {
             miss_counts++;
-            c->lines[i].timedata = time((time_t *)NULL);
+            c->lines[i].timedata = ++steps;
             c->lines[i].address = address;
             c->lines[i].vaild = true;
             return;
@@ -98,7 +99,7 @@ void update_cache(cache *c, unsigned long address)
     }
     overlay->address = address;
     overlay->vaild = true;
-    overlay->timedata = time((time_t *)NULL);
+    overlay->timedata = ++steps;
 }
 
 int main(int argc, char *argv[])
