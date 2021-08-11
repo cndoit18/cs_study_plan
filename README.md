@@ -5,3 +5,7 @@
 该仓库将用来记录笔记,代码和课程中所需要的lab等等
 
 在`Milestones`中，将会记录各个里程碑需要的时间,通常以一个大课程为一个里程碑
+
+
+**替换**:
+数据结构的目标改用[leetcode-master](https://github.com/youngyangyang04/leetcode-master)的刷题顺序
