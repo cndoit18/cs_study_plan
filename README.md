@@ -8,6 +8,6 @@
 
 
 **替换**:
-数据结构的目标改用[leetcode-master](https://github.com/youngyangyang04/leetcode-master)的刷题顺序
 
-操作系统改为 [xv6-labs-2021](https://github.com/cndoit18/xv6-labs-2021)
+1. 数据结构的目标改用[leetcode-master](https://github.com/youngyangyang04/leetcode-master)的刷题顺序
+2. 操作系统改为 [xv6-labs-2021](https://github.com/cndoit18/xv6-labs-2021)
