@@ -1,0 +1,102 @@
+
+Welcome to the NFS trace analysis homework! Here, we include one sample trace
+from Ellard and Seltzer's LISA '03 paper:
+
+  "New NFS Tracing Tools and Techniques for System Analysis"
+  Daniel Ellard and Margo Seltzer
+  LISA '03, San Diego, California 
+
+The trace file is called:
+  anon-deasna-021016-1300.txt.gz
+
+You can download it from here:
+  http://www.ostep.org/Traces/
+  
+This trace represents one hour of NFS traffic to and from a given NFS server.
+ 
+A sample is included herein; it's called 'sample'. You can do some simple
+calculations over that first, to see if you are on the right track.
+
+We currently cannot locate the exact file format description (if you can, drop
+us a note -- you'll get an acknowledgment in the preface and on the book
+webpage!), but we provide a rough description of what we have figured out
+through inspection here, to aid you in your own analysis.
+
+Here is an example entry, with (above it) labels column numbers we have added
+for clarity of exposition.
+
+#         1          2       3    4  5    6     7   8   9     10    11     12     13    14
+1034787600.774498 32.03fe 30.0801 U C3 7635f6db 6 read fh 1e2f6f... off 2316c000 count 4000 ...
+
+From what we can discern, this entry looks like a 'read' request (column 8,
+which says 'read', and also column 7, which is '6', the corresponding number
+in the NFS interface). The relevant file handle is a very long number in
+column 10 (truncated above); the read is to offset (column 12) and length
+0x4000 (column 14). These last two are request-specific; if a different
+operation were taking place, different arguments (as appropriate) would
+comprise the message.
+
+There are a few other fields of interest. The first column is a time stamp (in
+standard Unix time, seconds since January 1, 1970). The second and third
+columns represent which machine sent the request (or reply) and which machine
+it was sent to (the receiver). The 4th column always seems to be 'U' -- reason
+unclear. Perhaps the 'U' stands for 'Unclear'? Column 5 indicates whether the
+message is a request (C3) or reply (R3) (and the 3 seems to indicate NFS
+version 3). Finally, there is Column 6, which seems to contain a unique ID for
+a request/reply pair, and thus can be used to match up the two.
+
+Many more of these traces are available at the SNIA trace repository:
+  http://iotta.snia.org/ 
+
+For these specific traces:
+  http://iotta.snia.org/historical_section?tracetype_id=2 
+
+To process these traces, you'll need to be familiar with some kind of tool (or
+three) to do so. If you know Python or some general-purpose scripting
+language, that would work well. However, knowledge of some other line-oriented
+data processing tools might be particularly useful in working with these
+traces.
+
+For example, the tools 'head' and 'tail' are useful in extracting parts of a
+file (e.g., the first 10 lines, or the last 5, or whatever). 
+
+The tools 'sort' and 'uniq' will be useful too. For example, if we have a file
+full of the words 'read' and 'write' (interspersed), we can use 'sort' to put
+each of the reads and writes together, and then use 'uniq -c' to count how
+many of each arise. Specifically, assume a file (called 'foo') with the
+following contents: 
+
+read
+write
+read
+write
+write
+read
+read
+
+To get a count of each, use sort and uniq in a simple Unix pipe:
+
+prompt> sort /tmp/foo | uniq -c
+   4 read
+   3 write
+prompt>
+
+Finally, you'll need a tool to do more interesting processing. As said above,
+something like Python would be great. However, the tool 'awk' is particularly
+well-suited for these types of tasks.
+
+Awk processes an input file one line at a time. Words within each line can be
+referred to by $n, where n is the number of a column. For example, if we have
+the file 'foo' above, we can do the same type of counting with the following
+awk script:
+
+awk '($1=="read") {r++} ($2=="write") {w++} END {print r, "read"; print w, "write";}' foo 
+
+Here's a script to find the first and last timestamps in a trace file, and
+subtract them. See if you can understand how it works:
+
+awk '(n == 0) {n=1; t0 = $1} (n == 1) {t = $1} END {print t - t0}' foo
+
+Of course, many more sophisticated scripts are possible. The best thing for
+you to do is read the awk book (it's short, and clear!), or learn about awk
+from some other source. Good luck!

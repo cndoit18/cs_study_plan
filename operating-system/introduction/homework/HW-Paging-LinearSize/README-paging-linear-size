@@ -1,0 +1,68 @@
+
+This program (paging-linear-size.py) lets you figure out the size of a linear
+page table given a variety of input parameters. It is really pretty simple.
+
+To run it:
+ ./paging-lineary-size.py [options]
+
+where options are:
+ -h (or --help)            Gives a useful help printout
+ -v (or --vasize)          The number of bits in the virtual address (e.g., 32)
+ -e (or --ptesize)         The size of each page table entry
+ -p (or --pagesize)        The size of the page (e.g., 4k, or 4096, or 1m)
+
+and, as always:
+ -c                        Computes the answers for you.
+
+Running it once describes the problem:
+
+  prompt> ./paging-linear-size.py
+  ARG bits in virtual address 32
+  ARG page size 4k
+  ARG pte size 4
+  
+  Compute how big a linear page table is with the characteristics you see above.
+  
+  REMEMBER: There is one linear page table *per process*.
+  Thus, the more running processes, the more of these tables we will need.
+  However, for this problem, we are only concerned about the size of *one*
+  table.
+  prompt>
+
+Running it with -c gives the answer:
+
+ARG bits in virtual address 32
+ARG page size 4k
+ARG pte size 4
+
+Recall that an address has two components: 
+[ Virtual Page Number (VPN) | Offset ]
+
+The number of bits in the virtual address: 32
+The page size: 4096 bytes
+Thus, the number of bits needed in the offset: 12
+Which leaves this many bits for the VPN: 20
+Thus, a virtual address looks like this:
+
+V V V V V V V V V V V V V V V V V V V V | O O O O O O O O O O O O 
+
+where V is for a VPN bit and O is for an offset bit
+To compute the size of the linear page table, we need to know:
+- The # of entries in the table, which is 2^(num of VPN bits): 1048576.0
+- The size of each page table entry, which is: 4
+And then multiply them together. The final result:
+  4194304 bytes
+  in KB: 4096.0
+  in MB: 4.0
+
+
+Try it with some other parameters!
+(different number of bits in the address space, different page size,
+different page table entry size)
+
+
+
+
+
+
+
