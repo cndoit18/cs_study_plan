@@ -6,8 +6,12 @@
 
 在`Milestones`中，将会记录各个里程碑需要的时间,通常以一个大课程为一个里程碑
 
-
 **替换**:
 
 1. 数据结构的目标改用[leetcode-master](https://github.com/youngyangyang04/leetcode-master)的刷题顺序
 2. 操作系统改为 [xv6-labs-2021](https://github.com/cndoit18/xv6-labs-2021)
+
+---
+**补充**:
+
+1. 在 `c` 和 `csapp` 后穿插一个 [Linux C编程一站式学习](https://docs.huihoo.com/c/linux-c-programming/index.html)
