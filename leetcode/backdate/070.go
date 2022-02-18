@@ -11,7 +11,7 @@ func combine(n int, k int) [][]int {
 		if k == len(cur) {
 			*result = append(*result, cur)
 		}
-		for i := 0; i < len(ll); i++ {
+		for i := 0; i < len(ll) && len(cur)+len(ll) >= k; i++ {
 			deepcopy := append([]int{}, cur...)
 			deepcopy = append(deepcopy, ll[i])
 			f(ll[i+1:], deepcopy, result)
