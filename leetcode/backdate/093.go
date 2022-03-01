@@ -11,30 +11,27 @@ func restoreIpAddresses(s string) []string {
 	return result
 }
 
+func convert(num string) (int, bool) {
+	if len(num) > 1 && num[0] == '0' {
+		return 0, false
+	}
+
+	r, err := strconv.Atoi(num)
+	return r, err == nil
+}
+
 func split(prev []string, left string, result *[]string) {
 	if len(prev) == 3 && len(left) > 0 {
-		c, _ := strconv.Atoi(left)
-		if !(c <= 255) || (len(left) > 1 && left[0] == '0') {
-			return
+		if r, ok := convert(left); ok && r <= 255 {
+			*result = append(*result, strings.Join(append(prev, left), "."))
 		}
-		prev = append(prev, left)
-		*result = append(*result, strings.Join(prev, "."))
 		return
 	}
-	c := 0
-	for i := 0; i < 4 && len(left) > i; i++ {
-		tmp := 10 * c
-		tmp += int(left[i] - byte('0'))
-		if tmp > 255 || (i > 0 && left[0] == '0') {
+	for i := 1; len(left) >= i && i <= 4; i++ {
+		r, ok := convert(left[:i])
+		if !ok || !(r <= 255) {
 			break
 		}
-		c = tmp
-		sub := ""
-		if i+1 <= len(left) {
-			sub = left[i+1:]
-		}
-		s := append([]string{}, prev...)
-		s = append(s, left[:i+1])
-		split(s, sub, result)
+		split(append(append([]string{}, prev...), left[:i]), left[i:], result)
 	}
 }
