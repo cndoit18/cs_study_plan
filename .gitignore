@@ -45,7 +45,6 @@
 
 # Kernel Module Compile Results
 !go.mod
-*.mod*
 *.cmd
 .tmp_versions/
 modules.order
