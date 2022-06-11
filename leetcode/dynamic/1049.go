@@ -2,7 +2,7 @@ package dynamic
 
 func lastStoneWeightII(stones []int) int {
 	weight := 0
-	for _, w := range sÏtones {
+	for _, w := range stones {
 		weight += w
 	}
 
