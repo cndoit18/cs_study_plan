@@ -17,19 +17,19 @@ if recv[:3].decode() != '220':
     print('220 reply not received from server.')
 
 # Send HELO command and print server response.
-clientSocket.send('HELO Alice\r\n'.encode())
+clientSocket.send(b'HELO Alice\r\n')
 recv1 = clientSocket.recv(1024)
 print(recv1)
 if recv1[:3].decode() != '250':
     print('250 reply not received from server.')
 
-clientSocket.send('AUTH LOGIN\r\n'.encode())
+clientSocket.send(b'AUTH LOGIN\r\n')
 recv1 = clientSocket.recv(1024)
 print(recv1)
 if recv1[:3].decode() != '334':
     print('334 reply not received from server.')
 
-clientSocket.send('{}\r\n'.format(base64.b64encode('1047439649@qq.com'.encode()).decode()).encode())
+clientSocket.send('{}\r\n'.format(base64.b64encode(b'1047439649@qq.com').decode()).encode())
 recv1 = clientSocket.recv(1024)
 print(recv1)
 if recv1[:3].decode() != '334':
@@ -41,7 +41,7 @@ if recv1[:3].decode() != '235':
     print('235 reply not received from server.')
 # Send MAIL FROM command and print server response.
 # Fill in start
-clientSocket.send('MAIL FROM:<1047439649@qq.com>\r\n'.encode())
+clientSocket.send(b'MAIL FROM:<1047439649@qq.com>\r\n')
 recv1 = clientSocket.recv(1024)
 print(recv1)
 if recv1[:3].decode() != '250':
@@ -50,7 +50,7 @@ if recv1[:3].decode() != '250':
 
 # Send RCPT TO command and print server response.
 # Fill in start
-clientSocket.send('RCPT TO:<cndoit18@outlook.com>\r\n'.encode())
+clientSocket.send(b'RCPT TO:<cndoit18@outlook.com>\r\n')
 recv1 = clientSocket.recv(1024)
 print(recv1)
 if recv1[:3].decode() != '250':
@@ -59,7 +59,7 @@ if recv1[:3].decode() != '250':
 
 # Send DATA command and print server response.
 # Fill in start
-clientSocket.send('DATA\r\n'.encode())
+clientSocket.send(b'DATA\r\n')
 recv1 = clientSocket.recv(1024)
 print(recv1)
 if recv1[:3].decode() != '354':

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import signal
 from socket import *
 
 serverName = '0.0.0.0'
