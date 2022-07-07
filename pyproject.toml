@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "homeworks"
+name = "cs_study_play"
 version = "0.1.0"
 description = ""
 authors = ["cndoit18 <cndoit18@outlook.com>"]
