@@ -3,44 +3,44 @@ package token
 type TokenType string
 
 const (
-	ILLEGAL TokenType = "ILLEGAL"
-	EOF     TokenType = "EOF"
+	ILLEGAL = "ILLEGAL"
+	EOF     = "EOF"
 
 	// Identifiers + literals
-	IDENT TokenType = "IDENT" // add, foobar, x, y, ...
-	INT   TokenType = "INT"   // 1343456
+	IDENT = "IDENT" // add, foobar, x, y, ...
+	INT   = "INT"   // 1343456
 
 	// Operators
-	ASSIGN   TokenType = "="
-	PLUS     TokenType = "+"
-	MINUS    TokenType = "-"
-	BANG     TokenType = "!"
-	ASTERISK TokenType = "*"
-	SLASH    TokenType = "/"
+	ASSIGN   = "="
+	PLUS     = "+"
+	MINUS    = "-"
+	BANG     = "!"
+	ASTERISK = "*"
+	SLASH    = "/"
 
-	LT TokenType = "<"
-	GT TokenType = ">"
+	LT = "<"
+	GT = ">"
 
-	EQ     TokenType = "=="
-	NOT_EQ TokenType = "!="
+	EQ     = "=="
+	NOT_EQ = "!="
 
 	// Delimiters
-	COMMA     TokenType = ","
-	SEMICOLON TokenType = ";"
+	COMMA     = ","
+	SEMICOLON = ";"
 
-	LPAREN TokenType = "("
-	RPAREN TokenType = ")"
-	LBRACE TokenType = "{"
-	RBRACE TokenType = "}"
+	LPAREN = "("
+	RPAREN = ")"
+	LBRACE = "{"
+	RBRACE = "}"
 
 	// Keywords
-	FUNCTION TokenType = "FUNCTION"
-	LET      TokenType = "LET"
-	TRUE     TokenType = "TRUE"
-	FALSE    TokenType = "FALSE"
-	IF       TokenType = "IF"
-	ELSE     TokenType = "ELSE"
-	RETURN   TokenType = "RETURN"
+	FUNCTION = "FUNCTION"
+	LET      = "LET"
+	TRUE     = "TRUE"
+	FALSE    = "FALSE"
+	IF       = "IF"
+	ELSE     = "ELSE"
+	RETURN   = "RETURN"
 )
 
 type Token struct {
