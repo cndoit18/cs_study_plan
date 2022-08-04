@@ -16,3 +16,4 @@
 2. [6.S081课程](https://github.com/duguosheng/6.S081-All-in-one)
 3. [leetcode-master](https://programmercarl.com/)
 4. [6.S081课程表](https://pdos.csail.mit.edu/6.S081/2021/schedule.html) 需要补充课程表上的论文
+5. 添加[SICP JS版本](https://github.com/source-academy/sicp) [中译版本](https://sicp-js-zh.vercel.app/#/)
