@@ -1,6 +1,7 @@
 go 1.18
 
 use (
+	./design-patterns
 	./interpreter/monkey
 	./leetcode
 )
