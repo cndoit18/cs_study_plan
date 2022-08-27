@@ -1,4 +1,4 @@
-package factory
+package main
 
 func ExampleCreateSimpleTransport() {
 	t := CreateSimpleTransport("road")
