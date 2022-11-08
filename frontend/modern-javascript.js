@@ -187,3 +187,28 @@ let prop = {
 };
 
 console.log(prop.Name); // prop
+
+let newProp = {
+  __proto__: prop,
+};
+
+newProp.Name = "newProp";
+console.log(newProp.Name); // newProp
+
+// prototype
+
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+class Rabbit extends Animal {
+  // 私有属性
+  #waterAmount = 0;
+  hide() {
+    alert(`${this.name} hides!`);
+  }
+}
+
+// 集成相当于把prototype指向了父类
