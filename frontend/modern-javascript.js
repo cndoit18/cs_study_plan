@@ -96,13 +96,13 @@ function pow(x, n) {
 
 let obj = {
   name: "object",
-  Welcome(){
+  Welcome() {
     // this表示是对象的上下文环境
     console.log(this); // this 是 object
     console.log(this.name);
   },
-  Echo: () => console.log(this)
-}
+  Echo: () => console.log(this),
+};
 
 obj.Welcome();
 delete obj.Welcome; // 可以删除方法
@@ -111,13 +111,13 @@ console.log(obj.Welcome === undefined);
 
 // Object.assign 浅拷贝
 
-obj.Echo() // this 是 windows
+obj.Echo(); // this 是 windows
 
 function User(name) {
   this.name = name;
 }
 
-let user = new User('name');
+let user = new User("name");
 
 // 类似于 groovy 的 ?.
 console.log(obj.test?.());
@@ -125,7 +125,7 @@ console.log(obj.test?.());
 console.log(Symbol(1) === Symbol(1)); // false
 
 // Symbol 会被 for ... in 跳过
-let sl = Symbol.for("name");  // 注册到全局中
+let sl = Symbol.for("name"); // 注册到全局中
 console.log(Symbol.for("name") === sl);
 console.log(Symbol.keyFor(sl)); // name
 
@@ -140,7 +140,50 @@ let h = {
   },
   valueOf() {
     return "valueOf";
-  }
-}
+  },
+};
 
 console.log(String(h)); // [Symbol.toPrimitive]
+
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
+
+// WeakMap WeakSet
+
+// 解构
+let [first, , ...second] = ["a", "b", "c", "d"];
+console.log(first, second); // a [c, d]
+
+let options = {
+  title: "Menu",
+};
+
+let { width: ow = 100, height: oh = 200, title } = options;
+
+// 与 golang 的不同，js的Spread语法和Rest参数都是在变量前面加 ...
+
+let sayHi = function func(who) {
+  console.log(`${who} ${sayHi.name}`);
+};
+
+sayHi("test"); // test func
+
+// 对象属性配置
+Object.defineProperties(user, {
+  name: { value: "John", writable: false },
+  surname: { value: "Smith", writable: false },
+});
+
+// user.name = "abc"; Error
+
+let prop = {
+  n: "prop",
+  get Name() {
+    return this.n;
+  },
+
+  set Name(value) {
+    this.n = value;
+  },
+};
+
+console.log(prop.Name); // prop
