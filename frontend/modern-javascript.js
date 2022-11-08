@@ -4,6 +4,8 @@
 
 // 每个语句都应该以;结尾
 // https://tc39.es/ecma262/#sec-automatic-semicolon-insertion
+// 或者
+// https://standardjs.com/
 
 // 变量
 let message;
@@ -13,6 +15,9 @@ let message;
 let x = 1,
   y = 2,
   z = 3;
+
+// https://developer.chrome.com/docs/devtools/
+debugger;
 
 const CONSTANTS = 1;
 
@@ -76,3 +81,66 @@ let sum = (a, b) => a + b;
 // };
 
 console.log(sum(1, 2)); // 3
+
+// https://en.wikipedia.org/wiki/JSDoc
+/**
+ * 返回 x 的 n 次幂的指。
+ *
+ * @param {number} x
+ * @param {number} n
+ * @return {number} 返回 x 的 n 次幂
+ */
+function pow(x, n) {
+  return x ** n;
+}
+
+let obj = {
+  name: "object",
+  Welcome(){
+    // this表示是对象的上下文环境
+    console.log(this); // this 是 object
+    console.log(this.name);
+  },
+  Echo: () => console.log(this)
+}
+
+obj.Welcome();
+delete obj.Welcome; // 可以删除方法
+
+console.log(obj.Welcome === undefined);
+
+// Object.assign 浅拷贝
+
+obj.Echo() // this 是 windows
+
+function User(name) {
+  this.name = name;
+}
+
+let user = new User('name');
+
+// 类似于 groovy 的 ?.
+console.log(obj.test?.());
+
+console.log(Symbol(1) === Symbol(1)); // false
+
+// Symbol 会被 for ... in 跳过
+let sl = Symbol.for("name");  // 注册到全局中
+console.log(Symbol.for("name") === sl);
+console.log(Symbol.keyFor(sl)); // name
+
+// 类型转换
+let h = {
+  [Symbol.toPrimitive](hint) {
+    console.log(hint);
+    return "[Symbol.toPrimitive]";
+  },
+  toString() {
+    return "toString";
+  },
+  valueOf() {
+    return "valueOf";
+  }
+}
+
+console.log(String(h)); // [Symbol.toPrimitive]
