@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const Part = ({ part: { name, exercises } }) => {
   return (
-    <p>
+    <p onClick={()=>{console.log(`onClick ${name} ${exercises}`)}}>
       {name} {exercises}
     </p>
   );
@@ -13,9 +13,7 @@ const Header = ({ course: { name } }) => {
 const Content = ({ course: { parts } }) => {
   return (
     <>
-      <Part part={parts[0]} />
-      <Part part={parts[1]} />
-      <Part part={parts[2]} />
+    {parts.map((part)=>(<Part part={part}/>))}
     </>
   );
 };
