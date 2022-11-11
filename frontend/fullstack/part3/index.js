@@ -1,7 +1,38 @@
+require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const app = express();
+const mongoose = require("mongoose");
 
+const url = process.env.MONGODB_URI;
+
+mongoose
+  .connect(url)
+  .then((result) => {
+    console.log("connected to MongoDB");
+  })
+  .catch((error) => {
+    console.log("error connecting to MongoDB:", error.message);
+  });
+
+const noteSchema = new mongoose.Schema({
+  content: String,
+  date: Date,
+  important: Boolean,
+});
+const Note = mongoose.model("Note", noteSchema);
+
+const logger = (request, response, next) => {
+  console.log("Method:", request.method);
+  console.log("Path:  ", request.path);
+  console.log("Body:  ", request.body);
+  console.log("---");
+  next();
+};
+
+app.use(cors());
 app.use(express.json());
+app.use(logger);
 
 let notes = [
   {
@@ -29,13 +60,10 @@ app.get("/", (request, response) => {
 });
 
 app.get("/api/notes", (request, response) => {
-  response.json(notes);
+  Note.find({}).then((result) => {
+    response.json(result);
+  });
 });
-
-const generateId = () => {
-  const maxId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) : 0;
-  return maxId + 1;
-};
 
 app.post("/api/notes", (request, response) => {
   const body = request.body;
@@ -46,28 +74,59 @@ app.post("/api/notes", (request, response) => {
     });
   }
 
-  const note = {
+  const note = new Note({
     content: body.content,
     important: body.important || false,
     date: new Date(),
-    id: generateId(),
-  };
+  });
 
-  notes = notes.concat(note);
+  note.save().then((result) => {
+    response.json(result);
+  });
+});
 
-  response.json(note);
+app.put("/api/notes/:id", (request, response) => {
+  const body = request.body;
+
+  if (!body.content) {
+    return response.status(400).json({
+      error: "content missing",
+    });
+  }
+
+  Note.findByIdAndUpdate(
+    request.params.id,
+    {
+      content: body.content,
+      important: body.important || false,
+      date: new Date(),
+    },
+    { new: true }
+  ).then((result) => {
+    response.json(result);
+  });
 });
 
 app.get("/api/notes/:id", (request, response) => {
-  const note = notes.find((note) => note.id === +request.params.id);
-  note ? response.json(note) : response.status(404).end();
+  Note.findById(request.params.id)
+    .then((result) => {
+      response.json(result);
+    })
+    .catch((result) => {
+      response.status(404).end();
+    });
 });
 
 app.delete("/api/notes/:id", (request, response) => {
-  notes = notes.filter((note) => note.id !== +request.params.id);
-  response.status(204).end();
+  Note.findByIdAndRemove(request.params.id)
+    .then((result) => {
+      response.status(204).end();
+    })
+    .catch((result) => {
+      response.status(404).end();
+    });
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT;
 app.listen(PORT);
 console.log(`Server running on port ${PORT}`);
