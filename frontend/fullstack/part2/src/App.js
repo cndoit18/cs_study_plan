@@ -9,7 +9,7 @@ const App = () => {
   const [showAll, setShowAll] = useState(true);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/api/notes").then((response) => {
+    axios.get("/api/notes").then((response) => {
       setNotes(response.data);
     });
   }, []);
@@ -29,17 +29,17 @@ const App = () => {
           .filter((note) => showAll || note.important)
           .map((note) => (
             <Node
-              key={note._id}
+              key={note.id}
               note={note}
               toggleImportance={() => {
-                console.log(note._id);
+                console.log(note.id);
                 note.important = !note.important;
                 axios
-                  .put(`http://localhost:3001/api/notes/${note._id}`, note)
+                  .put(`/api/notes/${note.id}`, note)
                   .then((response) => {
                     setNotes(
                       notes.map((note) =>
-                        note._id !== response.data._id ? note : response.data
+                        note.id !== response.data.id ? note : response.data
                       )
                     );
                   });
@@ -57,7 +57,7 @@ const App = () => {
             important: Math.random() < 0.5,
           };
           axios
-            .post("http://localhost:3001/api/notes", note)
+            .post("/api/notes", note)
             .then((response) => {
               setNotes(notes.concat(response.data));
               setNewNote("");
