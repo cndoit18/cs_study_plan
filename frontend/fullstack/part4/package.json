@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build:ui": "rm -rf build && cd ../part2/ && npm run build && cp -r build  ../part4/",
+    "build:ui": "rm -rf build && cd ../part5/ && npm run build && cp -r build  ../part4/",
     "test": "NODE_ENV=test jest --verbose --runInBand"
   },
   "author": "",
