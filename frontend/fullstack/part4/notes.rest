@@ -4,17 +4,30 @@ GET http://localhost:3001/api/notes
 DELETE  http://localhost:3001/api/notes/1
 
 ###
+# @name login
+POST http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username": "root",
+    "password": "salainen"
+}
+###
+@authToken = {{login.response.body.token }}
+@userId = {{user.response.body.$.[0].id}}
 POST http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
     "content": "HTML is easy",
     "date": "2022-05-30T17:30:31.098Z",
     "important": true,
-    "userId": "636fd0aa9ff1a90205421544"
+    "userId": "{{userId}}"
 }
 
 ###
+# @name user
 GET http://localhost:3001/api/users
 
 
