@@ -10,5 +10,20 @@ Content-Type: application/json
 {
     "content": "HTML is easy",
     "date": "2022-05-30T17:30:31.098Z",
-    "important": true
+    "important": true,
+    "userId": "636fd0aa9ff1a90205421544"
+}
+
+###
+GET http://localhost:3001/api/users
+
+
+###
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+    "username": "root",
+    "name": "Superuser",
+    "password": "salainen"
 }
