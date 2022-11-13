@@ -34,7 +34,6 @@ notesRouter.post('/', async (request, response, next) => {
     }
 
     const user = await User.findOne({ username: body.username })
-
     const note = new Note({
         content: body.content,
         important: body.important || false,
