@@ -1,3 +1,6 @@
 [submodule "operating-system/vx6-labs-2021"]
 	path = operating-system/vx6-labs-2021
 	url = git@github.com:cndoit18/xv6-labs-2021.git
+[submodule "network/sponge"]
+	path = network/sponge
+	url = git@github.com:cndoit18/sponge.git
