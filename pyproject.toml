@@ -6,6 +6,7 @@ authors = ["cndoit18 <cndoit18@outlook.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+pylint = "^2.15.9"
 
 [tool.poetry.dev-dependencies]
 
