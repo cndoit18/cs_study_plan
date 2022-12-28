@@ -4,7 +4,7 @@ import os
 
 msg = "\r\n I love computer networks!"
 endmsg = "\r\n.\r\n"
-# Choose a mail server (e.g. Google mail server) and call it mailserver 
+# Choose a mail server (e.g. Google mail server) and call it mailserver
 mailserver = ('smtp.qq.com', 25)
 # Create socket called clientSocket and establish a TCP connection with mailserver
 #Fill in start
@@ -29,12 +29,14 @@ print(recv1)
 if recv1[:3].decode() != '334':
     print('334 reply not received from server.')
 
-clientSocket.send('{}\r\n'.format(base64.b64encode(b'1047439649@qq.com').decode()).encode())
+clientSocket.send('{}\r\n'.format(
+    base64.b64encode(b'1047439649@qq.com').decode()).encode())
 recv1 = clientSocket.recv(1024)
 print(recv1)
 if recv1[:3].decode() != '334':
     print('334 reply not received from server.')
-clientSocket.send('{}\r\n'.format(base64.b64encode(os.getenv('EMIAL_PWD').encode()).decode()).encode())
+clientSocket.send('{}\r\n'.format(
+    base64.b64encode(os.getenv('EMIAL_PWD').encode()).decode()).encode())
 recv1 = clientSocket.recv(1024)
 print(recv1)
 if recv1[:3].decode() != '235':
@@ -69,7 +71,7 @@ if recv1[:3].decode() != '354':
 # Send message data.
 # Fill in start
 clientSocket.send(msg.encode())
-# Fill in end 
+# Fill in end
 
 # Message ends with a single period.
 # Fill in start
