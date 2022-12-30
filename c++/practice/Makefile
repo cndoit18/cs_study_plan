@@ -1,2 +1,4 @@
-main: main.cc
-	clang++ -std=c++11 main.cc
+CXXFLAGS = -std=c++11
+objects := $(patsubst %.cc,%.o,$(wildcard *.cc))
+main : $(objects)
+	    $(CXX) $(CXXFLAGS) -o $@ $(objects)
