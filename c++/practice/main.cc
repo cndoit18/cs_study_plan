@@ -1,3 +1,4 @@
+#include "oop.h"
 #include "validate.h"
 #include <iostream>
 #include <stdexcept>
@@ -154,6 +155,11 @@ int main(int argc, char **argv) {
 
   C_Sales_data cd = C_Sales_data("c_test");
   // std::cout <<  cd.bookNo << std::endl; error bookNo 是私有属性，无法被访问
+
+  OOP op = OOP();
+  op.draw();
+
+  friend_oop(op);
 
   string str = "Hello, World!";
   std::cout << str << std::endl;
