@@ -6,6 +6,16 @@
 #include <vector>
 
 inline void default_func(int x = 10) { std::cout << x << std::endl; }
+std::istream &stream_func(std::istream &input) {
+  auto old_state = input.rdstate();
+  std::string buf;
+  while (!input.eof()) {
+    input >> buf;
+    std::cout << buf << std::flush;
+  }
+  input.setstate(old_state);
+  return input;
+}
 
 // const与重载
 void fcn(int *value) { return; }
@@ -44,7 +54,7 @@ int main(int argc, char **argv) {
   for (decltype(argc) index = 0; index < argc; index++) {
     std::cout << "args[" << index << "]:" << argv[index] << std::endl;
   }
-
+  stream_func(std::cin);
   // initialization
   int x = 1;
 

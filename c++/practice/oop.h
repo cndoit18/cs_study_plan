@@ -13,6 +13,8 @@ public:
   OOP(std::string name) : name(name) {}
   void draw() { std::cout << this->name << std::endl; }
 
+  static double rate() { return 1.0; }
+
 private:
   std::string name;
 };
