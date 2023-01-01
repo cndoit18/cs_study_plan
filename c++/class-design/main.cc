@@ -1,6 +1,7 @@
 #include <iostream>
 
 using namespace std;
+template <typename _T> bool compare(const _T &x, const _T &y) { return x == y; }
 
 class Sales_data {
 public:
@@ -20,9 +21,18 @@ public:
     cout << "right" << endl;
     return *this;
   }
+  virtual string Name() { return "Sales_data"; }
+
+protected:
+  string name = "protecetd";
 
 private:
   string bookNo;
+};
+
+template <typename T> class Quota final : public Sales_data {
+public:
+  virtual string Name() { return "Quota"; }
 };
 
 Sales_data::Sales_data(string bookNo) : bookNo(bookNo) {}
@@ -35,6 +45,9 @@ string Sales_data::isbn() const {
 }
 
 int main(int argc, char **args) {
+  compare(1, 2);
+  compare<float>(1.1, 2.2);
+
   unique_ptr<Sales_data> sd(new Sales_data());
   // 浅拷贝，可能会有野指针
   Sales_data clone = *sd;
@@ -43,5 +56,10 @@ int main(int argc, char **args) {
   Sales_data right = std::move(clone);
   sd.release();
   // cout << clone.ptr << endl;
+
+  Sales_data *q = new Quota<int>();
+  // 回避虚函数
+  cout << q->Sales_data::Name() << endl;
+
   return 0;
 }
