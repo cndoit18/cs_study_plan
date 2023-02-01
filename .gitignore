@@ -269,4 +269,7 @@ tags
 *.out
 *.app
 
+# Vagrant
+.vagrant/
+
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Vim,C++
