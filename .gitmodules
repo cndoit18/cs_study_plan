@@ -9,4 +9,4 @@
 	url = git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
 [submodule "frontend/html-css-course"]
 	path = frontend/html-css-course
-	url = git@github.com:jonasschmedtmann/html-css-course.git
+	url = git@github.com:cndoit18/html-css-course.git
