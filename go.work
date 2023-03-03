@@ -4,4 +4,5 @@ use (
 	./design-patterns
 	./interpreter/monkey
 	./leetcode
+	./golang
 )

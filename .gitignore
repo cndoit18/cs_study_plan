@@ -272,4 +272,6 @@ tags
 # Vagrant
 .vagrant/
 
+!go.mod
+
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Vim,C++
