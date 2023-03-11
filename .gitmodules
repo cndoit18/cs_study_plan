@@ -10,3 +10,6 @@
 [submodule "frontend/html-css-course"]
 	path = frontend/html-css-course
 	url = git@github.com:cndoit18/html-css-course.git
+[submodule "frontend/complete-javascript-course"]
+	path = frontend/complete-javascript-course
+	url = git@github.com:cndoit18/complete-javascript-course.git
