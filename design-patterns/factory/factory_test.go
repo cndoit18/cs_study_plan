@@ -1,12 +1,16 @@
-package factory
+package factory_test
 
-import "os"
+import (
+	"os"
+
+	"github.com/cndoit18/cs_study_plan/design-patterns/factory"
+)
 
 func ExampleButtonFactory() {
-	button := ButtonFactory(os.Stdout, "linux")
+	button := factory.ButtonFactory(os.Stdout, "linux")
 	button.Click()
 
-	button = ButtonFactory(os.Stdout, "windows")
+	button = factory.ButtonFactory(os.Stdout, "windows")
 	button.Click()
 
 	// Output:

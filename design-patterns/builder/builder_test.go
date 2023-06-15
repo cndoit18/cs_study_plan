@@ -1,9 +1,13 @@
-package builder
+package builder_test
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/cndoit18/cs_study_plan/design-patterns/builder"
+)
 
 func ExampleCarBuilder() {
-	builder := CarBuilder{}
+	builder := builder.CarBuilder{}
 	fmt.Println(builder.SetEngine("honda").Build())
 	fmt.Println(builder.SetEngine("honda").Reset().Build())
 	fmt.Println(builder.SetEngine("honda").SetSeats(1).Build())
